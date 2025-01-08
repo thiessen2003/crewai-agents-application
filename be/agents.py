@@ -3,6 +3,7 @@ from crewai import Agent
 class CompanyResearchAgents(): 
     def __init__(self, company):
         print("Setting up agents for company research")
+        self.llm = ChatOpen
     
     def research_manager(self, companies: list[str], positions: list[str]) -> Agent: 
         return Agent(
