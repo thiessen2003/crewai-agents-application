@@ -10,7 +10,6 @@ def kickoff_crew(job_id: str, companies: list[str], positions: list[str]):
     #SETUP THE CREW HERE
     
 
-
     #RUN THE CREW HERE
 
     #LET APP KNOW WE ARE DONE
