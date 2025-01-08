@@ -11,6 +11,13 @@ class CompanyResearchCrew:
             f"Setting up crew for {self.job_id} with companies {companies} and positions {positions}"
         )
 
+        #SETUP AGENTS 
+        
+
+        #SETUP TASKS 
+
+        #CREATE CREW
+
     
     def kickoff_crew(self):
         if not self.crew:

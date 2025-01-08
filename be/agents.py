@@ -1,9 +1,16 @@
 from crewai import Agent
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os 
+
+load_dotenv()
+
 
 class CompanyResearchAgents(): 
     def __init__(self, company):
         print("Setting up agents for company research")
-        self.llm = ChatOpen
+        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+        self.llm = genai.GenerativeModel("gemini-1.5-flash")
     
     def research_manager(self, companies: list[str], positions: list[str]) -> Agent: 
         return Agent(
@@ -27,5 +34,27 @@ class CompanyResearchAgents():
             tools=[self.searchInternetTool, self.youtubeSearchTool],
             verbose=True, 
             allow_delegation=True
+        )
+    
+    def company_research_agent(self) -> Agent: 
+        return Agent(
+            role="Company Research Agent", 
+            goal=f"""Look up the specific positions for a given company and find urls for 3 recent blog articles and 
+            the url and title for 3 recent YouTube interviews for each person in the specified positions. It is your kob to return this collection of 
+            information in a JSON object  
+            """,
+            backstory="""As a company research agent, you are responsible for looking up specific positions 
+            within a company and gathering relevant information.
+            
+            Important: 
+            - Once you have found the information, immediately stop searching for additional information. 
+            - Only return the requested information. NOTHING ELSE!
+            - Make sure you find the persons name who holds the position. 
+            - Do not generate fake information. Only return the information you find. Nothing else!
+            
+            """,
+            llm=self.llm,
+            tools=[self.searchInternetTool, self.youtubeSearchTool],
+            verbose=True, 
         )
     
