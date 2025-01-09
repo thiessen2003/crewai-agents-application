@@ -1,6 +1,6 @@
 from job_manager import append_event
 from agents import CompanyResearchAgents
-
+from tasks import CompanyResearchTasks
 
 class CompanyResearchCrew:
     def __init__(self, job_id: str):
@@ -18,6 +18,8 @@ class CompanyResearchCrew:
         company_research_agent = agents.company_research_agent()
 
         #SETUP TASKS 
+        tasks = CompanyResearchTasks()
+        company_research_tasks = 
         
         
 
