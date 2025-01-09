@@ -32,10 +32,10 @@ def kickoff_crew(job_id: str, companies: list[str], positions: list[str]):
             data="CREW COMPLETED", timestamp=datetime.now()
         ))
 
-    #RUN THE CREW HERE
+    # RUN THE CREW HERE
     
 
-    #LET APP KNOW WE ARE DONE
+    # LET APP KNOW WE ARE DONE
 
 @app.route('/api/crew', methods=['POST'])
 def run_crew(): 
