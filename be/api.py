@@ -56,6 +56,15 @@ def run_crew():
 
 @app.route('/api/crew/<job_id>', methods=['GET'])
 def get_status(job_id):
+
+    # Lock the job
+    with jobs_lock: 
+        job = jobs.get
+
+    # Check to see if exists
+
+    # Parse the JSON data
+
     return jsonify({"status": f"Getting status for {job_id}"}), 200
 
 
