@@ -1,8 +1,13 @@
+from crewai import Task, Agent
+from textwrap import dedent
+
+
+
 class CompanyResearchTasks():
     def __init__ (self, job_id: str): 
         self.job_id = job_id
 
-    def manage_research():
+    def manage_research(self, agent: Agent, companies: list[str], positions: list[str], tasks: list[Task]):
         return Task(
             description=dedent(f"""Based on the list of companies {companies} and the positions {positions},
             use the results from the Company Research Agent to research each position in each company to put 
@@ -15,7 +20,7 @@ class CompanyResearchTasks():
                 for 3 YouTube interviews for each position in each company. """
             ), 
             callback=self.append_event_callback,
-            context=task, 
+            context=tasks, 
             output_json=PositionInfoList
         )
 

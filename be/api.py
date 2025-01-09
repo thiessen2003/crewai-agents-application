@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, abort
 from uuid import uuid4
 from threading import Thread
+from agents import CompanyResearchAgents
 
 app = Flask(__name__)
 

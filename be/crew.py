@@ -19,6 +19,7 @@ class CompanyResearchCrew:
 
         #SETUP TASKS 
         
+        
 
         #CREATE CREW
 
