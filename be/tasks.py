@@ -1,11 +1,18 @@
 from crewai import Task, Agent
 from textwrap import dedent
 from models import PositionInfoList, PositionInfo
+from job_manager import append_event
 
 
 class CompanyResearchTasks():
     def __init__ (self, job_id: str): 
         self.job_id = job_id
+        
+    def append_event_callback(self, task_output):
+        print(f"Appending event for {self.job_id} with output {task_output}")
+        append_event(self.job_id, task_output)
+
+
 
     def manage_research(self, agent: Agent, companies: list[str], positions: list[str], tasks: list[Task]): #list of tasks is passed into context, which is basically tasks that are passed to other tasks
         return Task(
@@ -47,7 +54,7 @@ class CompanyResearchTasks():
                 expected_output="""A JSON object containing the researched information for each position in the company.""",
                 callback=self.append_event_callback, 
                 output_json=PositionInfo,
-                async_execution=True
+                async_execution=False #for instance, allow to look for information for the CEO and CTO at the same time
                 
 
         )
