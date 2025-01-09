@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 from flask import Flask, jsonify, request, abort
 from uuid import uuid4
 from threading import Thread
@@ -60,12 +61,21 @@ def get_status(job_id):
     # Lock the job
     with jobs_lock: 
         job = jobs.get
-
-    # Check to see if exists
-
+        if not job: 
+            abort(404, description="Job not found")
+    
     # Parse the JSON data
+    try: 
+        result_json = json.loads(job.result)
+    except:
+        result_json = job.result
 
-    return jsonify({"status": f"Getting status for {job_id}"}), 200
+    return jsonify({
+        'job_id': job_id, 
+        'status': job.status, 
+        'result': result_json,
+        'events': [{"timestamp": event.timestamp.isoformat(), "data": event.data} for event in job.events] #makes sure the event is in the right format
+    }), 200
 
 
 
