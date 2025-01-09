@@ -1,7 +1,10 @@
+from datetime import datetime
 from flask import Flask, jsonify, request, abort
 from uuid import uuid4
 from threading import Thread
 from agents import CompanyResearchAgents
+from crew import CompanyResearchCrew
+from job_manager import append_event, jobs_lock, jobs, Event
 
 app = Flask(__name__)
 
@@ -9,9 +12,28 @@ def kickoff_crew(job_id: str, companies: list[str], positions: list[str]):
     print(f"Running crew for {job_id} with companies {companies} and positions {positions}")
 
     #SETUP THE CREW HERE
+    try: 
+        company_research_crew = CompanyResearchCrew(job_id)
+        company_research_crew.setup_crew(companies, positions)
+        results = company_research_crew.kickoff_crew()
     
+    except Exception as e:
+        print(f"CREW FAILED: {str(e)}")
+        append_event(job_id, f"CREW FAILED: {str(e)}")
+        
+        with jobs_lock:
+            jobs[job_id].status = "ERROR"
+            jobs[job_id].result = str(e)
+
+    with jobs_lock: 
+        jobs[job_id].status = "COMPLETE"
+        jobs[job_id].result = results
+        jobs[job_id].events.append(Event(
+            data="CREW COMPLETED", timestamp=datetime.now()
+        ))
 
     #RUN THE CREW HERE
+    
 
     #LET APP KNOW WE ARE DONE
 
