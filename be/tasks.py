@@ -1,6 +1,6 @@
 from crewai import Task, Agent
 from textwrap import dedent
-
+from models import PositionInfoList, PositionInfo
 
 
 class CompanyResearchTasks():
@@ -24,6 +24,31 @@ class CompanyResearchTasks():
             output_json=PositionInfoList
         )
 
-    def company_research(): 
-        pass
+    def company_research(self, agent: Agent, company: str, positions: list[str]): 
+        return Task(
+            description=dedent(f"""Research the position {positions} for the {company} company.
+                For each position, find the URLs for 3 recent blog articles and the URLs and titles for
+                3 recent YouTube interviews for the person in each positio.
+                Return this collected information in a JSON object. 
+
+                Helpful tips: 
+                - To find the blog articles names and URLs, perform searches on Google such like the following: 
+                    - "{company} [POSITION HERE] blog articles"
+                - To find the YouTube interviews, perform searches on YouTube such as the following: 
+                    - "{company} [POSITION HERE] interview"             
+
+                Important: 
+                - Once you have found the information, immediately stop searching for additional information. 
+                - Only return the requested information. NOTHING ELSE!
+                - Do not generate fake information. Only return the information you find. Nothing else!
+                - Do not stop researching until you find the requested information for each position in the company. 
+                """),
+                agent=agent, 
+                expected_output="""A JSON object containing the researched information for each position in the company.""",
+                callback=self.append_event_callback, 
+                output_json=PositionInfo,
+                async_execution=True
+                
+
+        )
 
